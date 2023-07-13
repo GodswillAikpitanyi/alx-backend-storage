@@ -1,3 +1,4 @@
+-- This script creates a table with unique users.
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
