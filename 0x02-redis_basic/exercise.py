@@ -5,6 +5,7 @@ import uuid
 from typing import Callable, Union
 import functools
 
+# task 2
 """ Decorator function to count method calls"""
 def count_calls(method: Callable) -> Callable:
     @functools.wraps(method)
@@ -16,6 +17,7 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
     return wrapper
 
+# task 3
 """ Decorator function to store the history of inputs and outputs """
 def call_history(method: Callable) -> Callable:
     @functools.wraps(method)
@@ -37,6 +39,7 @@ def call_history(method: Callable) -> Callable:
         return output
     return wrapper
 
+# task 0
 class Cache:
     """ Creates a Cache class"""
 
@@ -57,6 +60,30 @@ class Cache:
         self._redis.set(key, data)
         return key
 
+    def replay(func: Callable):
+        """ Get the qualified name of the function """
+        func_name = func.__qualname__
+
+        """ Get the input and output keys """
+        input_key = func_name + ":inputs"
+        output_key = func_name + ":outputs"
+
+        """ Retrieve the input and output history from Redis """
+        input_history = cache._redis.lrange(input_key, 0, -1)
+        output_history = cache._redis.lrange(output_key, 0, -1)
+
+        """ Display the history of calls """
+        print(f"{func_name} was called {len(input_history)} times:")
+
+        for inputs, output in zip(input_history, output_history):
+             # Convert bytes to string
+            input_str = inputs.decode('utf-8')
+             # Convert bytes to string
+            output_str = output.decode('utf-8')
+            print(f"{func_name}(*{input_str}) -> {output_str}")
+
+
+# task 1
     def get(self,
             key: str,
             fn: Callable = None
